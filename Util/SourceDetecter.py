@@ -22,7 +22,7 @@ class SourseDetecter(object):
         else:
             raise FileNotFoundError("Not is File")
     def SaveImg(self,img):
-        cv2.imwrite(f"Media/input.jpg",img)        
+        cv2.imwrite(f"image/input.jpg",img)        
 
 
 if __name__=="__main__":

@@ -2,6 +2,7 @@ from Util.HandDetecter import HandDetected
 from Util.SourceDetecter import SourseDetecter
 from Util.Window import Window
 import numpy
+import time
 class Controller(object):
     def __init__(self):
         self.HandDetected = HandDetected()
@@ -32,25 +33,6 @@ class Controller(object):
 
                 self.Window.cv.circle(img, (center_x,center_y), 35, self.PenColor, self.Window.cv.FILLED)
 
-                # #开始具体的功能模块
-                # if(0<=center_y and center_y<=125):
-                #     if(center_x>=125 and center_x<=260):
-                #         self.ID = 1
-                #         self.PenSize = 15
-                #         self.PenColor=(0,0,255)
-                #     if(center_x>=365 and center_x<=505):
-                #         self.ID = 2
-                #         self.PenSize = 15
-                #         self.PenColor = (255,0,0)
-                #     if(center_x>=615 and center_x<=755):
-                #         self.ID = 3
-                #         self.PenSize=15
-                #         self.PenColor=(0,255,0)
-                #     if(center_x>=1065 and center_x<=1205):
-                #         self.ID = 4
-                #         self.PenSize= 30
-                #         self.PenColor=(0,0,0)
-
         return img
 
 
@@ -61,7 +43,6 @@ class Controller(object):
         if (postions):
             indexFinger = postions[self.HandDetected.INDEXFINGER]
             middleFinger = postions[self.HandDetected.MIDDLEFINGER]
-
 
             if (indexFinger.get('flag') and not middleFinger.get('flag')):
                 indexFinger_x, indexFinger_y = int(indexFinger.get("x") * self.window_w), int(
@@ -89,12 +70,12 @@ class Controller(object):
 
     def Main(self):
 
+        start_time = time.time()
         while True:
 
             flag,img =  self.Window.cap.read()
             img = self.Window.cv.flip(img, 1)
             result,img = self.HandDetected.findHands(img,True)
-
 
             img = self.ControllerFingerTrack(result,img)
 
@@ -102,9 +83,22 @@ class Controller(object):
             img = self.ShowDrawWay(img)
 
             self.Window.show("Canvas",img)
-            if(self.Window.cv.waitKey(1)==ord("s")):
-                # 保存图片
-                self.SourseDetecter.SaveImg(self.Canvas)
+          
+            # 检测手势
+            hasHand = self.HandDetected.CheckHandUp(result)
+            if hasHand is None:
+            # 如果对象为None，开始计时
+                elapsed_time = time.time() - start_time
+                print("etime ", elapsed_time)
+                if elapsed_time > 5:
+                    print("超过5秒未检测到手势")
+                    # 保存图片
+                    self.SourseDetecter.SaveImg(self.Canvas)
+                    return
+            else:
+                # 如果对象不为None，则重置定时器
+                start_time = time.time()
+            
             if(self.Window.cv.waitKey(1)==ord("q")):
                 return
 
