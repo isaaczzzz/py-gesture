@@ -3,7 +3,6 @@ import cv2
 import tensorflow as tf
 from PIL import Image, ImageFilter
 
-
 # CNN
 def recognize(img):
     """
@@ -60,7 +59,7 @@ def fill(x):
 # 分割与识别
 def Run(img):
     """
-    :param img: 截屏图像
+    :param img: 图像
     :return: 每个预测数字组成的字符串list
     """
     grayscaleimg = cv2.resize(img, (100, 50), interpolation=cv2.INTER_CUBIC)  # 修改图像大小以便识别
