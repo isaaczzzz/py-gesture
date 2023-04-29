@@ -15,5 +15,6 @@ if __name__ == '__main__':
     tr = Run.Run(img)  # 调用Run中方法对所截图img进行处理，返回一个列表tr，里面每个元素都是对应字符 eg.['3', '2', '6']
     # print(tr) # 查看tr内容
     re = ''.join(str(s) for s in tr)
-    make_window(re)
     print('识别到的数字: '+re)
+    make_window(re)
+    

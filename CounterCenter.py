@@ -90,8 +90,8 @@ class Controller(object):
             # 如果对象为None，开始计时
                 elapsed_time = time.time() - start_time
                 print("etime ", elapsed_time)
-                if elapsed_time > 5:
-                    print("超过5秒未检测到手势")
+                if elapsed_time > 3:
+                    print("超过3秒未检测到手势")
                     # 保存图片
                     self.SourseDetecter.SaveImg(self.Canvas)
                     return
