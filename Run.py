@@ -65,15 +65,6 @@ def Run(img):
     grayscaleimg = cv2.resize(img, (100, 50), interpolation=cv2.INTER_CUBIC)  # 修改图像大小以便识别
     grayscaleimg = cv2.cvtColor(grayscaleimg, cv2.COLOR_BGR2GRAY)  # 生成灰度图
 
-    # 二值化，由于笔画为黑色，背景为白色； 为了适应字符分割，将背景转为黑色 0，笔画转为白色255
-    # 最终生成grayscaleimg为所需图，即 50x100 矩阵，其中背景点值为0，笔画点值为255
-    for index, i in enumerate(grayscaleimg):
-        for indey, j in enumerate(i):
-            if j > 200:  # 200为阈值，可自己调节
-                grayscaleimg[index][indey] = 0
-            else:
-                grayscaleimg[index][indey] = 255
-
     # 按行切割,此时grayscaleimg为 50x100 矩阵，50 行，100列，每个元素不是0就是255
     row_nz = []
     # 将每行展成一个list,即有50个list
